@@ -24,6 +24,7 @@ class SearchEngineCrawler(Crawler):
     def __init__(self):
         self._keyword = None
         self._result_num = None
+        self._result_set = set()
         self._results = list()
         self._response = None
         self._url = f"http://m.baidu.com/ssid=0/from=0/bd_page_type=1/uid=0/baiduid=F0A715FCC08EDFEF3EF12FEDDC2EC810/pu=sz%40224_220%2Cta%40middle____/pu=sz%40224_220%2Cta%40middle___24_74.0/baiduid=31235B9FF0F7A756A7940620CAF109E1/s?ref=www_colorful&lid=12985577237012163036&word={self._keyword}&pn={self._result_num}&rn=10&tn=middle&prest=111081&st=111091&usm=0&sa=pp"
@@ -37,7 +38,6 @@ class SearchEngineCrawler(Crawler):
         }
 
     def fetch(self):
-        print(f"正在从 baidu 采集 {self._keyword} 的URL...")
         with requests.Session() as session:
             self._response = session.request(method=self._method, url=self._url, headers=self._headers, timeout=10)
             # print(self._response.text)
@@ -48,9 +48,8 @@ class SearchEngineCrawler(Crawler):
 
     def handle_data(self):
         print("正在做数据处理……")
-        print(self._results)
         # 去重处理
-        unique_results = list(set([url for url in self._results]))
+        unique_results = list(self._result_set)
         if os.path.exists(Parser.args.output):
             overwrite = input(f"文件 {Parser.args.output} 已存在，是否覆盖？ (y/n): ").lower()
             if overwrite != 'y':
