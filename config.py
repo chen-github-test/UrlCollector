@@ -30,6 +30,9 @@ class Parser:
             action="version",
             version="%(prog)s 1.0"
         )
+        cls.parser.add_argument(
+            "-e", "--env", choices=["baidu", "bing"], help="选择搜索引擎，默认百度搜索"
+        )
 
         cls.args = cls.parser.parse_args()
 

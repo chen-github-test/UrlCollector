@@ -23,6 +23,9 @@ options:
 
 </code>
 
+运行环境：python3.6+
+pip install -r requirements # 安装所需要的环境依赖
+cd UrlCollector 进入项目
 
 <code> 
 使用方法：
